@@ -1,10 +1,10 @@
-
 from flask import Flask, render_template_string, abort
 import json
+import os
 
 app = Flask(__name__)
 
-# Örnek veri (gerçek sistemde veritabanı bağlantısı olur)
+# Veriyi JSON dosyasından al
 with open("veritabani.json", "r", encoding="utf-8") as f:
     plakalar = json.load(f)
 
@@ -40,3 +40,9 @@ def plaka_goster(heat_no):
         if p["heat_no"] == heat_no:
             return render_template_string(TEMPLATE, plaka=p)
     return abort(404)
+
+# Render.com için gerekli: PORT üzerinden çalış
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
